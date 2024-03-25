@@ -5,11 +5,11 @@ import { logger } from './logger';
 
 class Account {
   private accountId: string;
-  private accumulatedBalance: number;
+  private balance: number;
 
-  constructor(accountId: string, accumulatedBalance: number) {
+  constructor(accountId: string, balance: number) {
     this.accountId = accountId;
-    this.accumulatedBalance = accumulatedBalance;
+    this.balance = balance;
   }
 
   getAccountId(): string {
@@ -17,11 +17,11 @@ class Account {
   }
 
   getAccumulatedBalance(): number {
-    return this.accumulatedBalance;
+    return this.balance;
   }
 
-  setAccumulatedBalance(accumulatedBalance: number): void {
-    this.accumulatedBalance = accumulatedBalance;
+  setAccumulatedBalance(balance: number): void {
+    this.balance = balance;
   }
 }
 
@@ -40,18 +40,15 @@ enum PaymentType {
 class SalaryInformation {
   accountId: string;
   salary: number;
-  rate: number;
-  payment_type: PaymentType;
+  payFrequency: PaymentType;
   constructor(
     accountId: string,
     salary: number,
-    rate: number,
-    payment_type: PaymentType,
+    payFrequency: PaymentType,
   ) {
     this.accountId = accountId;
     this.salary = salary;
-    this.rate = rate;
-    this.payment_type = payment_type;
+    this.payFrequency = payFrequency;
   }
 }
 

@@ -19,7 +19,7 @@ describe('DailySalaryCalculator', () => {
   ];
 
   test.each(testCases)('$name', ({ dailySalary, expectedDailyRate }) => {
-    const salary = new SalaryInformation('1', dailySalary, 0, PaymentType.DAILY);
+    const salary = new SalaryInformation('1', dailySalary, PaymentType.DAILY);
     const dailyRate = calculator.calculateDailySalary(salary);
     expect(dailyRate).toBe(expectedDailyRate);
   });
@@ -35,7 +35,7 @@ describe('MonthlySalaryCalculator', () => {
   ];
 
   test.each(testCases)('$name', ({ monthlySalary, date, expectedDailyRate}) => {
-    const salary = new SalaryInformation('1', monthlySalary, 0, PaymentType.MONTHLY);
+    const salary = new SalaryInformation('1', monthlySalary, PaymentType.MONTHLY);
     let calculator;
 
     if (date) {
