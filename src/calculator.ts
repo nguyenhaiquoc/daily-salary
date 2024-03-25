@@ -1,13 +1,14 @@
 
 // import logger
 import { logger } from './logger';
-
+import { Decimal } from 'decimal.js';
+Decimal.set({ rounding: Decimal.ROUND_HALF_EVEN })
 
 class Account {
   private accountId: string;
-  private balance: number;
+  private balance: Decimal;
 
-  constructor(accountId: string, balance: number) {
+  constructor(accountId: string, balance: Decimal) {
     this.accountId = accountId;
     this.balance = balance;
   }
@@ -16,11 +17,11 @@ class Account {
     return this.accountId;
   }
 
-  getAccumulatedBalance(): number {
+  getAccumulatedBalance(): Decimal {
     return this.balance;
   }
 
-  setAccumulatedBalance(balance: number): void {
+  setAccumulatedBalance(balance: Decimal): void {
     this.balance = balance;
   }
 }
@@ -30,21 +31,17 @@ class Account {
     - accountId: string
     - salary: number
     - rate: number
-    - payment_type (monthly or hourly): enum
+    - payment_type (monthly or hourly):
 */
-enum PaymentType {
-  MONTHLY = 'monthly',
-  DAILY = 'daily',
-}
 
 class SalaryInformation {
   accountId: string;
-  salary: number;
-  payFrequency: PaymentType;
+  salary: Decimal;
+  payFrequency: string;
   constructor(
     accountId: string,
-    salary: number,
-    payFrequency: PaymentType,
+    salary: Decimal,
+    payFrequency: string,
   ) {
     this.accountId = accountId;
     this.salary = salary;
@@ -55,7 +52,7 @@ class SalaryInformation {
 // SalaryCalculator interface with the following method: calculateDailySalary method that takes a
 // SalaryInformation object and returns a number.
 interface SalaryCalculator {
-  calculateDailySalary(salary: SalaryInformation): number;
+  calculateDailySalary(salary: SalaryInformation): Decimal;
 }
 
 /*
@@ -67,14 +64,15 @@ class MonthlySalaryCalculator implements SalaryCalculator {
     // init day, if not set, use today
     this.day = day || new Date();
   }
-  calculateDailySalary(salary: SalaryInformation): number {
+  calculateDailySalary(salary: SalaryInformation): Decimal {
     const date = new Date(this.day);
     const month = date.getMonth();
     const year = date.getFullYear();
     logger.debug("date = " + date);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     logger.debug(`Days in month: ${daysInMonth}`);
-    return salary.salary / daysInMonth;
+    // round to 2 decimal places using Decimal.ROUND_HALF_EVEN
+    return salary.salary.div(daysInMonth).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN);
   }
 }
 
@@ -82,7 +80,7 @@ class MonthlySalaryCalculator implements SalaryCalculator {
     DailySalaryCalculator that implements the Salary interface for Monthly Payment type
 */
 class DailySalaryCalculator implements SalaryCalculator {
-  calculateDailySalary(salary: SalaryInformation): number {
+  calculateDailySalary(salary: SalaryInformation): Decimal {
     return salary.salary;
   }
 }
@@ -91,7 +89,6 @@ class DailySalaryCalculator implements SalaryCalculator {
 export {
   Account,
   SalaryInformation,
-  PaymentType,
   SalaryCalculator,
   MonthlySalaryCalculator,
   DailySalaryCalculator,

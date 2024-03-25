@@ -38,6 +38,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@prisma/client": "^5.11.0",
+    "decimal": "^0.0.2",
+    "decimal.js": "^10.4.3",
     "pino": "^8.19.0",
     "prisma": "^5.11.0",
     "tslib": "~2.6"
