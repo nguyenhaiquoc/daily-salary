@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://salary-hero:salary-hero@127.0.0.1:5123/salaryhero"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id            Int             @id @default(autoincrement())
+  accountId     String       @unique @db.VarChar(10)
+  balance       Decimal      @db.Decimal(12, 2)
+  salaryinfo    SalaryInfo[]
+  auditLog AuditLog[]
+}
+
+model SalaryInfo {
+  id           Int          @id @default(autoincrement())
+  accountId    String       @db.VarChar(10)
+  salary       Decimal      @db.Decimal(10,0)
+  payFrequency PayFrequency @default(MONTHLY)
+  account      Account      @relation(fields: [accountId], references: [accountId])
+}
+
+enum PayFrequency {
+  MONTHLY
+  DAILY
+}
+
+enum Status {
+  ERROR
+  COMPLETED
+}
+
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  accountId  String   @db.VarChar(10)
+  updateDate DateTime @db.Date
+  status     Status
+  details    Json     @default("{}")
+  account    Account  @relation(fields: [accountId], references: [accountId])
+}

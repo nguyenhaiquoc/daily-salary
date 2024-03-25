@@ -16,6 +16,7 @@
     "eslint-plugin-jest": "~27.6",
     "jest": "~29.7",
     "prettier": "~3.1",
+    "prisma-generator-typescript-interfaces": "^1.4.0",
     "rimraf": "~5.0",
     "ts-api-utils": "~1.0",
     "ts-jest": "~29.1",
@@ -36,7 +37,9 @@
   "author": "Hai Nguyen <quochai.kstn@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "@prisma/client": "^5.11.0",
     "pino": "^8.19.0",
+    "prisma": "^5.11.0",
     "tslib": "~2.6"
   },
   "volta": {
