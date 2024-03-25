@@ -3,7 +3,7 @@ import {
   SalaryInformation,
   PaymentType,
   MonthlySalaryCalculator,
-} from '../src/calculator';
+} from '../../src/calculator';
 
 describe('DailySalaryCalculator', () => {
   let calculator: DailySalaryCalculator;
