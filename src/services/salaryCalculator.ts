@@ -94,6 +94,7 @@ class DailySalaryCalculator implements SalaryCalculator {
 
 async function calculateDailySalariesAllAcount(date: Date): Promise<void> {
   try {
+    logger.info('Start calculate daily salaries for all accounts');
     const accountRepository = new AccountRepository();
     const accounts = await accountRepository.getAccounts();
     for (const account of accounts) {
@@ -125,8 +126,9 @@ async function calculateDailySalariesAllAcount(date: Date): Promise<void> {
         );
       }
     }
+    logger.info('Finish calculate daily salaries for all accounts');
   } catch (error) {
-    console.error('Error calculating daily salaries:', error);
+    logger.error(`Error calculating daily salaries: ${error}`);
   }
 }
 
