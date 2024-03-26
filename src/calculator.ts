@@ -7,10 +7,11 @@ Decimal.set({ rounding: Decimal.ROUND_HALF_EVEN })
 class Account {
   private accountId: string;
   private balance: Decimal;
-
-  constructor(accountId: string, balance: Decimal) {
+  private salary: SalaryInformation[];
+  constructor(accountId: string, balance: Decimal, salary?: SalaryInformation[]) {
     this.accountId = accountId;
     this.balance = balance;
+    this.salary = salary;
   }
 
   getAccountId(): string {
@@ -24,6 +25,10 @@ class Account {
   setAccumulatedBalance(balance: Decimal): void {
     this.balance = balance;
   }
+
+  getSalaryInformation(): SalaryInformation[] {
+    return this.salary;
+  }
 }
 
 /*
@@ -31,9 +36,8 @@ class Account {
     - accountId: string
     - salary: number
     - rate: number
-    - payment_type (monthly or hourly):
+    - payFrequency (monthly or daily)
 */
-
 class SalaryInformation {
   accountId: string;
   salary: Decimal;

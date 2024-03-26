@@ -19,26 +19,20 @@ model SalaryInfo {
   id           Int          @id @default(autoincrement())
   accountId    String       @db.VarChar(10)
   salary       Decimal      @db.Decimal(10,0)
-  payFrequency PayFrequency @default(MONTHLY)
+  payFrequency String       @db.VarChar(10)
   account      Account      @relation(fields: [accountId], references: [accountId])
 }
 
-enum PayFrequency {
-  MONTHLY
-  DAILY
-}
-
-enum Status {
-  ERROR
-  COMPLETED
-}
 
 
 model AuditLog {
   id         Int      @id @default(autoincrement())
   accountId  String   @db.VarChar(10)
   updateDate DateTime @db.Date
-  status     Status
+  status     String   @db.VarChar(10)
   details    Json     @default("{}")
   account    Account  @relation(fields: [accountId], references: [accountId])
+  createdAt  DateTime @default(now()) @db.Timestamp(6)
+  // declare a unique index on the `accountId`, `updateDate` AND `status` columns
+  @@unique([accountId, updateDate, status])
 }
