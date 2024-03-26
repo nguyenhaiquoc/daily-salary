@@ -1,14 +1,19 @@
-
 // import logger
-import { logger } from './logger';
+import { MONTHLY } from '../const';
+import AccountRepository from '../repositories/account';
+import { logger } from '../logger';
 import { Decimal } from 'decimal.js';
-Decimal.set({ rounding: Decimal.ROUND_HALF_EVEN })
+Decimal.set({ rounding: Decimal.ROUND_HALF_EVEN });
 
 class Account {
   private accountId: string;
   private balance: Decimal;
   private salary: SalaryInformation[];
-  constructor(accountId: string, balance: Decimal, salary?: SalaryInformation[]) {
+  constructor(
+    accountId: string,
+    balance: Decimal,
+    salary?: SalaryInformation[],
+  ) {
     this.accountId = accountId;
     this.balance = balance;
     this.salary = salary;
@@ -42,11 +47,7 @@ class SalaryInformation {
   accountId: string;
   salary: Decimal;
   payFrequency: string;
-  constructor(
-    accountId: string,
-    salary: Decimal,
-    payFrequency: string,
-  ) {
+  constructor(accountId: string, salary: Decimal, payFrequency: string) {
     this.accountId = accountId;
     this.salary = salary;
     this.payFrequency = payFrequency;
@@ -72,11 +73,13 @@ class MonthlySalaryCalculator implements SalaryCalculator {
     const date = new Date(this.day);
     const month = date.getMonth();
     const year = date.getFullYear();
-    logger.debug("date = " + date);
+    logger.debug('date = ' + date);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     logger.debug(`Days in month: ${daysInMonth}`);
     // round to 2 decimal places using Decimal.ROUND_HALF_EVEN
-    return salary.salary.div(daysInMonth).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN);
+    return salary.salary
+      .div(daysInMonth)
+      .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN);
   }
 }
 
@@ -89,6 +92,44 @@ class DailySalaryCalculator implements SalaryCalculator {
   }
 }
 
+async function calculateDailySalariesAllAcount(date: Date): Promise<void> {
+  try {
+    const accountRepository = new AccountRepository();
+    const accounts = await accountRepository.getAccounts();
+    for (const account of accounts) {
+      try {
+        const salaryInformations = account.getSalaryInformation(); // Assuming getter exists
+        let totalRate = new Decimal(0);
+        for (const salaryInformation of salaryInformations) {
+          let calculator;
+          if (salaryInformation.payFrequency === MONTHLY) {
+            calculator = new MonthlySalaryCalculator(date);
+          } else {
+            calculator = new DailySalaryCalculator();
+          }
+          const dailyRate = calculator.calculateDailySalary(salaryInformation);
+          totalRate = totalRate.add(dailyRate);
+        }
+        if (totalRate.gt(0)) {
+          logger.info(
+            `Account ${account.getAccountId()} has a total daily rate of ${totalRate}`,
+          );
+          await accountRepository.updateBalance(
+            account.getAccountId(),
+            totalRate,
+          );
+        }
+      } catch (error) {
+        logger.error(
+          `Error calculating daily salaries for account ${account.getAccountId()}: ${error}`,
+        );
+      }
+    }
+  } catch (error) {
+    console.error('Error calculating daily salaries:', error);
+  }
+}
+
 // export module
 export {
   Account,
@@ -96,4 +137,5 @@ export {
   SalaryCalculator,
   MonthlySalaryCalculator,
   DailySalaryCalculator,
+  calculateDailySalariesAllAcount,
 };
