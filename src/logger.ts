@@ -1,9 +1,8 @@
-import * as pino from "pino";
+import * as pino from 'pino';
 
 const logger = pino.default({
   name: 'salary-hello',
-  level: 'debug'
+  level: 'debug',
 });
-
 
 export { logger };
