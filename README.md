@@ -37,6 +37,7 @@ For full schema, see schema.prisma file in the root folder.
 * AuditLog: Used to track whether an account has been processed on a given day. The primary purpose is to prevent multiple updates to the account balance within a single day, which is unacceptable in the financial domain.
 * All updates to the `Account` (specifically the `balance`) will be implemented within a transaction. An insert into the `AuditLog` will also occur to ensure consistency. The isolation level will be set to `RepeatableRead` to avoid the lost update phenomenon in case other processes attempt to update the same account record.
 * The codebase uses Decimal (via Decimal.js) to avoid floating-point rounding errors.
+* For monthly type, I just use simple formula: daily/rate = salary/number_days_in_month (31 for Jan, 28 for Feb ..). However, if the business requires calculating the daily rate based on working days only (excluding weekends and holidays), we might need to update the formula accordingly.
 * The flow: query all account and salary information data ==> process them one by one ==> update.
 
 ### Some possible improvement.
