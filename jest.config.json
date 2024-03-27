@@ -14,5 +14,10 @@
     "src/**/*.mts",
     "!src/**/*.d.ts",
     "!src/**/*.d.mts"
+  ],
+  "globalSetup": "./testsetup/setup.ts",
+  "globalTeardown": "./testsetup/teardown.ts",
+  "modulePathIgnorePatterns": [
+    "./dist/"
   ]
 }

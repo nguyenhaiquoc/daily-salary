@@ -1,5 +1,5 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "hainguyen-salary",
   "version": "0.0.0",
   "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
   "engines": {
@@ -22,7 +22,8 @@
     "typescript": "~5.3"
   },
   "scripts": {
-    "start": "node build/src/main.js",
+    "start": "node dist/calculateDailySalaryScript.js",
+    "init-db": "npx prisma db push",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.json",
@@ -37,7 +38,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@prisma/client": "^5.11.0",
-    "decimal": "^0.0.2",
     "decimal.js": "^10.4.3",
     "pino": "^8.19.0",
     "prisma": "^5.11.0",

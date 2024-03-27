@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2022",
+    "target": "ES5",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -18,5 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/**/*", "__tests__/**/*"]
+  "include": [
+    "src/**/*",
+    "__tests__/**/*",
+    "testsetup/teardown.ts",
+    "testsetup/setup.ts"
+  ],
+  "exclude": ["node_modules/**/*", "dist/**/*"]
 }

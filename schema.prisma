@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://salary-hero:salary-hero@127.0.0.1:5123/salaryhero"
+  url      = env("DATABASE_URL")
 }
 
 generator client {

@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: salary-hero
+      POSTGRES_PASSWORD: salary-hero
+      POSTGRES_DB: salaryhero
+    ports:
+      - 5123:5432
+
