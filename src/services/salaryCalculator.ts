@@ -84,7 +84,7 @@ class MonthlySalaryCalculator implements SalaryCalculator {
 }
 
 /*
-    DailySalaryCalculator that implements the Salary interface for Monthly Payment type
+    DailySalaryCalculator that implements the Salary interface for Daily Payment type
 */
 class DailySalaryCalculator implements SalaryCalculator {
   calculateDailySalary(salary: SalaryInformation): Decimal {
@@ -99,7 +99,7 @@ async function calculateDailySalariesAllAcount(date: Date): Promise<void> {
     const accounts = await accountRepository.getAccounts();
     for (const account of accounts) {
       try {
-        const salaryInformations = account.getSalaryInformation(); // Assuming getter exists
+        const salaryInformations = account.getSalaryInformation();
         let totalRate = new Decimal(0);
         for (const salaryInformation of salaryInformations) {
           let calculator;
